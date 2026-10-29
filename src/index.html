@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:">
+  <title>UiB Karaktersnitt</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="titlebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <h1>Karaktersnitt</h1>
+        <p class="subtitle">Universitetet i Bergen · vektet etter studiepoeng</p>
+      </div>
+    </div>
+    <button id="themeBtn" class="btn ghost small" type="button" title="Bytt tema">
+      <span id="themeLabel">Tema: System</span>
+    </button>
+  </header>
+
+  <main class="layout">
+    <!-- Venstre kolonne: skjema + kalkulator -->
+    <aside class="sidebar">
+      <section class="card">
+        <div class="card-head">
+          <h2 id="formTitle">Legg til emne</h2>
+          <button id="cancelEdit" class="btn ghost small" type="button" hidden>Avbryt</button>
+        </div>
+        <form id="courseForm" autocomplete="off" novalidate>
+          <label class="field">
+            <span>Emnekode / fagnavn</span>
+            <input id="name" type="text" placeholder="f.eks. INF100 – Innføring i programmering" required maxlength="120">
+          </label>
+
+          <fieldset class="field">
+            <legend>Karakter</legend>
+            <div class="chips" id="gradeChips" role="radiogroup">
+              <label><input type="radio" name="grade" value="A"><span>A</span></label>
+              <label><input type="radio" name="grade" value="B"><span>B</span></label>
+              <label><input type="radio" name="grade" value="C"><span>C</span></label>
+              <label><input type="radio" name="grade" value="D"><span>D</span></label>
+              <label><input type="radio" name="grade" value="E"><span>E</span></label>
+              <label><input type="radio" name="grade" value="F"><span>F</span></label>
+              <label class="wide"><input type="radio" name="grade" value="Bestått"><span>Bestått</span></label>
+              <label class="wide"><input type="radio" name="grade" value="Ikke bestått"><span>Ikke bestått</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="credits">Studiepoeng</label>
+            <div class="credits-row">
+              <input id="credits" type="number" min="0.5" max="120" step="0.5" value="10" required>
+              <div class="quick" id="quickCredits">
+                <button type="button" data-v="5">5</button>
+                <button type="button" data-v="7.5">7.5</button>
+                <button type="button" data-v="10">10</button>
+                <button type="button" data-v="15">15</button>
+                <button type="button" data-v="20">20</button>
+                <button type="button" data-v="30">30</button>
+              </div>
+            </div>
+          </div>
+
+          <p id="formError" class="form-error" role="alert" hidden></p>
+          <button id="submitBtn" class="btn primary block" type="submit">Legg til emne</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Hva må jeg få?</h2>
+        </div>
+        <div class="whatif-inputs">
+          <label class="field">
+            <span>Mål</span>
+            <select id="targetLetter"></select>
+          </label>
+          <label class="field">
+            <span>Stp igjen</span>
+            <input id="planned" type="number" min="0.5" max="300" step="0.5" value="30">
+          </label>
+        </div>
+        <div id="whatifResult" class="whatif-result"></div>
+        <table class="mini-table" id="whatifTable">
+          <thead><tr><th>Mål</th><th>Snitt du trenger</th><th>Kun A-er</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </aside>
+
+    <!-- Høyre kolonne: resultat + liste -->
+    <div class="content">
+      <section class="card hero">
+        <div class="hero-main">
+          <div>
+            <p class="eyebrow">Ditt snitt</p>
+            <div class="avg-row">
+              <span id="avgValue" class="avg">–</span>
+              <span id="avgLetter" class="letter-badge">Ingen karakterer</span>
+            </div>
+            <p id="avgHint" class="muted">Legg til emner for å se snittet ditt.</p>
+          </div>
+          <div class="stats">
+            <div class="stat"><span class="stat-value" id="statTotal">0</span><span class="stat-label">stp registrert</span></div>
+            <div class="stat"><span class="stat-value" id="statPassed">0</span><span class="stat-label">stp bestått</span></div>
+            <div class="stat"><span class="stat-value" id="statGraded">0</span><span class="stat-label">stp i snittet</span></div>
+          </div>
+        </div>
+
+        <div class="scale" aria-hidden="true">
+          <div class="scale-track">
+            <div class="seg" data-l="F"></div>
+            <div class="seg" data-l="E"></div>
+            <div class="seg" data-l="D"></div>
+            <div class="seg" data-l="C"></div>
+            <div class="seg" data-l="B"></div>
+            <div class="seg" data-l="A"></div>
+            <div id="scaleMarker" class="scale-marker" hidden></div>
+          </div>
+          <div class="scale-ticks">
+            <span>0</span>
+            <span>0.5</span>
+            <span>1.5</span>
+            <span>2.5</span>
+            <span>3.5</span>
+            <span>4.5</span>
+            <span>5</span>
+          </div>
+        </div>
+
+        <label class="toggle">
+          <input id="includeF" type="checkbox" checked>
+          <span>Ta med F (0 poeng) i snittet</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Registrerte emner <span id="courseCount" class="count">0</span></h2>
+          <button id="resetBtn" class="btn danger-ghost small" type="button">Slett alle</button>
+        </div>
+        <div class="table-wrap">
+          <table class="courses" id="courseTable">
+            <thead>
+              <tr>
+                <th data-sort="name">Emne</th>
+                <th data-sort="grade">Karakter</th>
+                <th data-sort="credits" class="num">Stp</th>
+                <th class="num hide-sm">Karakterpoeng</th>
+                <th class="actions"><span class="sr">Handlinger</span></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div id="emptyState" class="empty">
+            <p><strong>Ingen emner ennå.</strong></p>
+            <p class="muted">Skriv inn emnekode, velg karakter og antall studiepoeng til venstre.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="distCard">
+        <div class="card-head"><h2>Fordeling (studiepoeng per karakter)</h2></div>
+        <div id="dist" class="dist"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" hidden>
+    <span id="toastText"></span>
+    <button id="toastUndo" class="btn ghost small" type="button">Angre</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
