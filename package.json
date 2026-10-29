@@ -1,7 +1,7 @@
 {
   "name": "uib-karaktersnitt",
   "productName": "UiB Karaktersnitt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Beregn vektet karaktersnitt etter UiB sine regler.",
   "main": "main.js",
   "author": "Even Kirkeluten",
@@ -47,7 +47,9 @@
           ]
         }
       ],
-      "artifactName": "UiB-Karaktersnitt-${version}-mac-${arch}.${ext}"
+      "artifactName": "UiB-Karaktersnitt-${version}-mac-${arch}.${ext}",
+      "identity": "-",
+      "hardenedRuntime": false
     },
     "win": {
       "target": [

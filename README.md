@@ -13,7 +13,13 @@ Hent siste versjon under **[Releases](https://github.com/evkir79/uib-karaktersni
 | Windows (installasjon)       | `UiB-Karaktersnitt-Setup-<versjon>.exe`      |
 | Windows (uten installasjon)  | `UiB-Karaktersnitt-Portable-<versjon>.exe`   |
 
-**Mac:** Åpne .dmg-filen og dra appen til Programmer. Appen er ikke signert av Apple. Hvis macOS sier at appen «er skadet» eller «ikke kan åpnes», kjør dette én gang i Terminal:
+**Mac:** Åpne .dmg-filen og dra appen til Programmer. Appen er ikke signert med et Apple-sertifikat, så første gang du åpner den, sier macOS at den ikke kan bekrefte utvikleren. Slik åpner du den likevel:
+
+1. Klikk **Ferdig** i meldingen.
+2. Åpne **Systeminnstillinger → Personvern og sikkerhet**, bla ned og klikk **Åpne likevel** ved «UiB Karaktersnitt».
+3. Bekreft med passordet ditt eller Touch ID.
+
+Sier macOS at appen «er skadet», eller virker ikke stegene over, kjør dette én gang i Terminal:
 
 ```bash
 xattr -cr "/Applications/UiB Karaktersnitt.app"
