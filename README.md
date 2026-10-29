@@ -2,6 +2,37 @@
 
 En frittstående skrivebordsapp for macOS og Windows som beregner vektet karaktersnitt etter reglene ved Universitetet i Bergen. Appen er bygget med Electron og vanlig HTML/CSS/JavaScript, og fagene dine lagres lokalt på maskinen.
 
+## Last ned
+
+Hent siste versjon under **[Releases](https://github.com/evkir79/uib-karaktersnitt/releases/latest)**. Du trenger ikke installere noe annet.
+
+| System                       | Fil                                          |
+|------------------------------|----------------------------------------------|
+| Mac med Apple Silicon (M1–M4) | `UiB-Karaktersnitt-<versjon>-mac-arm64.dmg`  |
+| Mac med Intel-prosessor      | `UiB-Karaktersnitt-<versjon>-mac-x64.dmg`    |
+| Windows (installasjon)       | `UiB-Karaktersnitt-Setup-<versjon>.exe`      |
+| Windows (uten installasjon)  | `UiB-Karaktersnitt-Portable-<versjon>.exe`   |
+
+**Mac:** Åpne .dmg-filen og dra appen til Programmer. Appen er ikke signert av Apple. Hvis macOS sier at appen «er skadet» eller «ikke kan åpnes», kjør dette én gang i Terminal:
+
+```bash
+xattr -cr "/Applications/UiB Karaktersnitt.app"
+```
+
+**Windows:** Hvis SmartScreen advarer, klikk **Mer informasjon** og deretter **Kjør likevel**.
+
+### Lage en ny versjon
+
+Filene bygges automatisk av GitHub Actions (`.github/workflows/release.yml`). Slik lager du en ny versjon:
+
+1. Øk `version` i `package.json`, for eksempel til `1.0.1`, og commit endringen.
+2. Lag og push en tag med samme nummer:
+   ```bash
+   git tag v1.0.1
+   git push origin main v1.0.1
+   ```
+3. Etter cirka 5–10 minutter ligger de nye filene under Releases.
+
 ## Funksjoner
 
 - **Vektet snitt:** Σ(karakterverdi × studiepoeng) ÷ Σ(studiepoeng), med A = 5, B = 4, C = 3, D = 2, E = 1 og F = 0.
@@ -88,8 +119,8 @@ npm run dist:mac
 
 Resultatet er:
 
-- `dist/UiB Karaktersnitt-1.0.0-arm64.dmg` for Apple Silicon (M1/M2/M3/M4)
-- `dist/UiB Karaktersnitt-1.0.0.dmg` for Intel
+- `dist/UiB-Karaktersnitt-1.0.0-mac-arm64.dmg` for Apple Silicon (M1/M2/M3/M4)
+- `dist/UiB-Karaktersnitt-1.0.0-mac-x64.dmg` for Intel
 - `.zip`-filer med selve `.app`-pakken
 - `dist/mac-arm64/UiB Karaktersnitt.app` og `dist/mac/UiB Karaktersnitt.app`, som du kan dra rett inn i Programmer
 
@@ -109,8 +140,8 @@ npm run dist:win
 
 Resultatet er:
 
-- `dist\UiB Karaktersnitt Setup 1.0.0.exe`, en installasjonsfil som lager snarveier i Start-menyen og på skrivebordet
-- `dist\UiB Karaktersnitt 1.0.0.exe`, en portabel versjon som kjører uten installasjon
+- `dist\UiB-Karaktersnitt-Setup-1.0.0.exe`, en installasjonsfil som lager snarveier i Start-menyen og på skrivebordet
+- `dist\UiB-Karaktersnitt-Portable-1.0.0.exe`, en portabel versjon som kjører uten installasjon
 
 **Hvis SmartScreen advarer:** Windows kan vise «Windows beskyttet PC-en» fordi filen er usignert. Klikk **Mer informasjon** og deretter **Kjør likevel**.
 
